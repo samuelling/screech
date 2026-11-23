@@ -3,8 +3,8 @@
 Secret notes by sound. Type a note, and your phone plays it as a modem screech; another phone listening nearby decodes it. With a shared passphrase, the note is encrypted before it ever becomes sound.
 
 - **iPhone app:** native Swift (this Xcode project).
-- **Web version:** for everyone else, at **https://samuelling.github.io/Screech/** (index.html, css/, js/ and icons/ at the top of the repo). It installs to a phone's home screen and works offline.
-- **Same protocol** as the Modem's Secret Notes in [RetroSynths](https://samuelling.github.io/RetroSynths/#oldschool). All three understand each other, and CI checks that on every push.
+- **Web version:** for everyone else, at **https://linglab.org/screech/** (index.html, css/, js/ and icons/ at the top of the repo). It installs to a phone's home screen and works offline.
+- **Same protocol** as the Modem's Secret Notes in [RetroSynths](https://linglab.org/retrosynths/#oldschool). All three understand each other, and CI checks that on every push.
 
 ## How it works
 

@@ -20,7 +20,7 @@ struct HelpView: View {
                     section("IS IT REALLY SECRET?", "Yes, with a passphrase. The note is encrypted with AES-256 before it becomes sound, using a key made from your passphrase (PBKDF2, 200,000 rounds). Anyone can record the screech, but without the passphrase it's noise, and a tampered note won't open.\nWithout a passphrase it's an OPEN NOTE: anyone with a decoder can read it.\nPick a passphrase that's hard to guess; a few unrelated words work well.")
                     section("NOTES AS SOUND FILES", "SAVE AS SOUND makes an audio file of the note that you can text or email. The other person opens it in Screech (Share › Screech, or DECODE A SOUND FILE). Notes survive most voice-memo compression.")
                     section("IF A NOTE DOESN'T ARRIVE", "Move closer, turn the volume up, cut background noise, or switch to STURDY, then send again. The receiver keeps listening. Across a room, echoes can garble a note.")
-                    section("FRIENDS WITHOUT AN IPHONE", "Screech also runs in any browser at samuelling.github.io/Screech, and it talks to the Modem in RetroSynths. All of them understand each other.")
+                    section("FRIENDS WITHOUT AN IPHONE", "Screech also runs in any browser at linglab.org/screech, and it talks to the Modem in RetroSynths. All of them understand each other.")
                     section("THE LIGHTS", "MR: microphone listening · CD: carrier detected · RD: receiving data · SD: sending data. Named after the lights on old external modems.")
                 }
                 .padding(20)
