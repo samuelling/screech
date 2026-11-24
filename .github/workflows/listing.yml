@@ -1,0 +1,56 @@
+name: Listing screenshots
+
+# Uploads the captioned screenshots in AppStore/screenshots to the app's version in App Store Connect
+# (the 6.9" iPhone slot), replacing whatever is there. Uses the same ASC_* secrets as TestFlight.
+# It touches screenshots only: no metadata, no build, and it never submits for review.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['appstore-*']
+    paths: ['AppStore/screenshots/*.png', '.github/workflows/listing.yml']
+
+concurrency: listing
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install fastlane
+        run: sudo gem install fastlane -N
+
+      - name: Upload screenshots
+        env:
+          KID: ${{ secrets.ASC_KEY_ID }}
+          IID: ${{ secrets.ASC_ISSUER_ID }}
+          P8: ${{ secrets.ASC_KEY_P8 }}
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
+          FASTLANE_SKIP_UPDATE_CHECK: "1"
+          FASTLANE_DISABLE_COLORS: "1"
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/asc" "$RUNNER_TEMP/shots/en-US"
+          ruby -rjson -e 'File.write(ARGV[0], JSON.generate({key_id: ENV["KID"], issuer_id: ENV["IID"], key: ENV["P8"], in_house: false}))' "$RUNNER_TEMP/asc/key.json"
+          cp AppStore/screenshots/*.png "$RUNNER_TEMP/shots/en-US/"
+          ls -la "$RUNNER_TEMP/shots/en-US"
+          VERSION=$(grep -m1 "MARKETING_VERSION" Screech.xcodeproj/project.pbxproj | sed -E 's/.*= ([0-9.]+);/\1/')
+          fastlane deliver \
+            --api_key_path "$RUNNER_TEMP/asc/key.json" \
+            --app_identifier com.samuelling.screech \
+            --platform ios \
+            --app_version "$VERSION" \
+            --screenshots_path "$RUNNER_TEMP/shots" \
+            --overwrite_screenshots true \
+            --skip_binary_upload true \
+            --skip_metadata true \
+            --skip_app_version_update true \
+            --run_precheck_before_submit false \
+            --submit_for_review false \
+            --force true 2>&1 | tail -60
+
+      - name: Remove key
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/asc"

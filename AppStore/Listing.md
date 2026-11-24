@@ -12,7 +12,7 @@ Everything that goes into App Store Connect for version 1.0, in one place.
 | **Primary category** | Utilities |
 | **Secondary category** | Entertainment |
 | **Price** | Free |
-| **Copyright** | 2026 Samuel Ling |
+| **Copyright** | 2026 Sam Ling |
 | **Privacy policy** | https://linglab.org/screech/privacy.html |
 | **Support URL** | https://linglab.org/screech/support.html |
 | **Marketing URL** | https://linglab.org/screech/ |
