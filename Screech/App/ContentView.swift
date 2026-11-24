@@ -4,8 +4,13 @@ import UniformTypeIdentifiers
 struct ContentView: View {
     @EnvironmentObject var model: ScreechModel
     enum Tab: String, CaseIterable { case send = "SEND", listen = "LISTEN" }
+    #if DEBUG
+    @State private var tab: Tab = Screenshots.listenFirst ? .listen : .send
+    @State private var showHelp = Screenshots.helpFirst
+    #else
     @State private var tab: Tab = .send
     @State private var showHelp = false
+    #endif
 
     var body: some View {
         NavigationStack { screen.toolbar(.hidden, for: .navigationBar) }
