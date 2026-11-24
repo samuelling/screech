@@ -37,19 +37,24 @@ jobs:
           cp AppStore/screenshots/*.png "$RUNNER_TEMP/shots/en-US/"
           ls -la "$RUNNER_TEMP/shots/en-US"
           VERSION=$(grep -m1 "MARKETING_VERSION" Screech.xcodeproj/project.pbxproj | sed -E 's/.*= ([0-9.]+);/\1/')
-          fastlane deliver \
-            --api_key_path "$RUNNER_TEMP/asc/key.json" \
-            --app_identifier com.samuelling.screech \
-            --platform ios \
-            --app_version "$VERSION" \
-            --screenshots_path "$RUNNER_TEMP/shots" \
-            --overwrite_screenshots true \
-            --skip_binary_upload true \
-            --skip_metadata true \
-            --skip_app_version_update true \
-            --run_precheck_before_submit false \
-            --submit_for_review false \
-            --force true 2>&1 | tail -60
+          # deliver wants a Deliverfile, or it stops to ask whether to create one
+          mkdir -p "$RUNNER_TEMP/work" && cd "$RUNNER_TEMP/work"
+          cat > Deliverfile <<DELIVER
+          api_key_path "$RUNNER_TEMP/asc/key.json"
+          app_identifier "com.samuelling.screech"
+          platform "ios"
+          app_version "$VERSION"
+          screenshots_path "$RUNNER_TEMP/shots"
+          overwrite_screenshots true
+          skip_binary_upload true
+          skip_metadata true
+          skip_app_version_update true
+          run_precheck_before_submit false
+          submit_for_review false
+          force true
+          DELIVER
+          sed -i 's/^ *//' Deliverfile
+          fastlane deliver 2>&1 | tail -60
 
       - name: Remove key
         if: always()
